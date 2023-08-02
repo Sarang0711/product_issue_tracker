@@ -1,9 +1,11 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
-const {errorHandler} = require('./ErrorHandler')
+const {errorHandler} = require('./middleware/ErrorHandler')
 const connectDB = require('./config/db')
 const PORT = process.env.PORT || 5000
 
+
+//! To start the server use: npm run server
 //connect to database
 connectDB()
 
@@ -17,6 +19,7 @@ app.get('/', (req, res) => {
   res.json({"message": "Welcome to the api of support desk"})
 })
 
+// middlewares
 app.use(errorHandler)
 
 //Routes
