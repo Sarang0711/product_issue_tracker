@@ -1,7 +1,6 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
-import {FaUser} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import {FaUser} from 'react-icons/fa';
 import {toast} from 'react-toastify';
 import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import { register, reset } from '../features/auth/authSlice';
@@ -13,6 +12,8 @@ function Register() {
     password: "",
     password2: "",
   });
+  
+  const {name, email, password, password2} = formData;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ function Register() {
       toast.error(message)
     }
     // Redirect if successfully registered and logged in
-    if(isSuccess && user) {
+    if(isSuccess || user) {
       navigate('/');
     }
 
@@ -49,7 +50,7 @@ function Register() {
     }
   }
 
-  const {name, email, password, password2} = formData;
+  
 
   return (
     <>

@@ -7,7 +7,7 @@ const User = require('../models/userModel')
 // @desc    Register a new user
 // @route   /api/users
 // @access  public
-const userRegister = asyncHandler (async (req, res) => {
+const registerUser = asyncHandler (async (req, res) => {
   const {name, email, password} = req.body
   
   //* validation
@@ -17,10 +17,11 @@ const userRegister = asyncHandler (async (req, res) => {
   }
   
   //* Check if user already exists
-  let userExists = await User.findOne({email: email})
+  const userExists = await User.findOne({email: email})
   if(userExists) {
-    console.log('error occurred')
-    throw new Error('User already exists')
+    // console.log('error occurred')
+    res.status(400);
+    throw new error('User already exists')
   }
 
   //* Hashing the password
@@ -52,7 +53,7 @@ const userRegister = asyncHandler (async (req, res) => {
 // @desc    Login a user
 // @route   /api/users/login
 // @access  public
-const userLogin = asyncHandler (async (req, res) => {
+const loginUser = asyncHandler (async (req, res) => {
   const {email, password} = req.body;
 
   const user = await User.findOne({email})
@@ -80,13 +81,13 @@ const generateToken = (id) => {
 }
 
 //* Creating a protected route
-const getInfo = asyncHandler(async (req, res) => {
+const getMe = asyncHandler(async (req, res) => {
   const user = {
     id: req.user._id,
-    name: req.user.name,
     email: req.user.email,
+    name: req.user.name,
   }
   res.status(200).json(user)
 })
 
-module.exports = {userRegister, userLogin, getInfo}
+module.exports = {registerUser, loginUser, getMe}
