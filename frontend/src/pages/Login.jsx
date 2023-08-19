@@ -4,6 +4,7 @@ import {FaSignInAlt} from 'react-icons/fa';
 import {toast} from 'react-toastify';
 import {useSelector, useDispatch} from 'react-redux';
 import {login} from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -11,27 +12,36 @@ function Login() {
     password: "",
   });
 
+const { email, password} = formData;
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }))
-  }
+const dispatch = useDispatch();
+const navigate = useNavigate();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+const {isLoading} = useSelector((state) => state.auth);
 
-    const userData = {email, password}
-    
-    dispatch(login(userData));
-  }
+const onChange = (e) => {
+  setFormData((prevState) => ({
+    ...prevState,
+    [e.target.name]: e.target.value,
+  }))
+}
+
+const onSubmit = (e) => {
+  e.preventDefault();
+
+  const userData = {email, password}
+  
+  dispatch(login(userData))
+    .unwrap()
+    .then((user) => {
+      toast.success(`Logged in as ${user.name}`)
+      navigate('/')
+    })
+    .catch(toast.error)
+}
 
 
-  const { email, password} = formData;
 
-  const dispatch = useDispatch();
-  const {user, isLoading, isSuccess, message} = useSelector(state => state.auth);
   return (
     <>
       <section className="heading">
@@ -46,7 +56,7 @@ function Login() {
         
         <div className="form-group">
           <input
-           type="text"
+           type="email"
            className='form-control'
            id='email'
            name='email'

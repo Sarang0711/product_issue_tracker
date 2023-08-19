@@ -1,6 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
-const {errorHandler} = require('./middleware/ErrorHandler')
+const {errorHandler} = require('./middleware/ErrorMiddleware')
 const connectDB = require('./config/db')
 const PORT = process.env.PORT || 5000
 const path = require('path');
@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended: false}))
 
 //Routes
 app.use('/api/users', require('./routes/userRoutes'))
-app.use('/api/tickets', require('./routes/ticketRoutes'))
+// app.use('/api/tickets', require('./routes/ticketRoutes'))
 
 // Serve Frontend
 if(process.env.NODE_ENV === 'production') {

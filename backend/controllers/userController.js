@@ -21,7 +21,7 @@ const registerUser = asyncHandler (async (req, res) => {
   if(userExists) {
     // console.log('error occurred')
     res.status(400);
-    throw new error('User already exists')
+    throw new Error('User already exists')
   }
 
   //* Hashing the password
